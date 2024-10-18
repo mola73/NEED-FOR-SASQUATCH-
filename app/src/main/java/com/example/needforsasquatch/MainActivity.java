@@ -1,4 +1,5 @@
 package com.example.needforsasquatch;
+
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -8,24 +9,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MediaPlayer mediaPlayer;
+    public static MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // start menu music
+        // Start menu music
         mediaPlayer = MediaPlayer.create(this, R.raw.start_menu_music);
-        mediaPlayer.setLooping(true);  // Loop music
+        mediaPlayer.setLooping(true);
         mediaPlayer.start();
 
-        //start ImageButton
         ImageButton startButton = findViewById(R.id.start_button);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to the Mode Selection Screen
                 Intent intent = new Intent(MainActivity.this, ModeSelectionActivity.class);
                 startActivity(intent);
             }

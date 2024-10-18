@@ -8,7 +8,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Needforsasquatch">
 
-
+        <!-- MainActivity: Launcher activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -18,9 +18,15 @@
             </intent-filter>
         </activity>
 
-        <!-- ModeSelectionActivity: Set android:exported as needed -->
+        <!-- ModeSelectionActivity -->
         <activity
             android:name=".ModeSelectionActivity"
+            android:exported="false">
+        </activity>
+
+        <!-- DashModeActivity -->
+        <activity
+            android:name=".DashModeActivity"
             android:exported="false">
         </activity>
 
