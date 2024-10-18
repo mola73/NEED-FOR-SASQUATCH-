@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);//TEST
 
         // Start menu music
         mediaPlayer = MediaPlayer.create(this, R.raw.start_menu_music);
@@ -39,4 +39,6 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer = null;
         }
     }
+
+
 }
