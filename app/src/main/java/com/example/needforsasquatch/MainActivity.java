@@ -9,36 +9,41 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static MediaPlayer mediaPlayer;
+    private static MediaPlayer menuMusic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);//TEST
+        setContentView(R.layout.activity_main);
 
-        // Start menu music
-        mediaPlayer = MediaPlayer.create(this, R.raw.start_menu_music);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
+        // Initialize and start menu music
+        menuMusic = MediaPlayer.create(this, R.raw.start_menu_music);
+        menuMusic.setLooping(true);
+        menuMusic.start();
 
         ImageButton startButton = findViewById(R.id.start_button);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Navigate to mode selection
                 Intent intent = new Intent(MainActivity.this, ModeSelectionActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
+    // Static method to stop menu music from other activities
+    public static void stopMenuMusic() {
+        if (menuMusic != null && menuMusic.isPlaying()) {
+            menuMusic.stop();
+            menuMusic.release();
+            menuMusic = null;
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopMenuMusic(); // Ensure music is stopped if the app is closed
+    }
 }

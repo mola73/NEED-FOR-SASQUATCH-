@@ -1,34 +1,51 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/road"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_road">
 
+    <!-- Main Car -->
     <ImageView
         android:id="@+id/main_car"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="160dp"
         android:src="@drawable/main_car"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true" />
 
+    <!-- Oncoming Car: Left Lane -->
     <ImageView
         android:id="@+id/oncoming_car_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="160dp"
         android:src="@drawable/oncoming_car"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="-200dp"
+        android:layout_marginStart="25dp" />
 
+    <!-- Oncoming Car: Middle Lane -->
     <ImageView
         android:id="@+id/oncoming_car_middle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="160dp"
         android:src="@drawable/oncoming_car"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="-200dp"
+        android:layout_centerHorizontal="true" />
 
+    <!-- Oncoming Car: Right Lane -->
     <ImageView
         android:id="@+id/oncoming_car_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="160dp"
         android:src="@drawable/oncoming_car"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="-200dp"
+        android:layout_marginEnd="25dp"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>
