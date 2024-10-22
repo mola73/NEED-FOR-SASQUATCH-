@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mode_selection_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Mode Selection Background Image -->
+    <ImageView
+        android:id="@+id/mode_menu_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="Mode Menu Background"
+        android:scaleType="fitXY"
+        android:src="@drawable/mode_menu_background" />
+
+    <!-- Mode Title -->
+    <ImageView
+        android:id="@+id/mode_choose_title"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/mode_choose"
+        android:contentDescription="Choose Mode Title" />
+
+    <!-- Dash ImageButton -->
+    <ImageButton
+        android:id="@+id/dash_button"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_below="@id/mode_choose_title"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/dash_button"
+        android:background="@android:color/transparent"
+        android:contentDescription="Dash Mode Button" />
+
+    <!-- Destruction ImageButton -->
+    <ImageButton
+        android:id="@+id/destruction_button"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_below="@id/dash_button"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/destruction_button"
+        android:background="@android:color/transparent"
+        android:contentDescription="Destruction Mode Button" />
+
+    <!-- Run-Away ImageButton -->
+    <ImageButton
+        android:id="@+id/run_away_button"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_below="@id/destruction_button"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/run_away_button"
+        android:background="@android:color/transparent"
+        android:contentDescription="Run-Away Mode Button" />
+</RelativeLayout>
