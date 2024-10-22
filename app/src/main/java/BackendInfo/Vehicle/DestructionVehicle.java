@@ -1,6 +1,6 @@
-package BackendInfo;
+package BackendInfo.Vehicle;
 
-public class DestructionVehicle extends Vehicle{
+public class DestructionVehicle extends Vehicle {
     private Boolean hasTimeBoost;
 
     public DestructionVehicle(){

@@ -1,6 +1,6 @@
-package BackendInfo;
+package BackendInfo.Mode;
 
-public class RunawayMode extends Mode{
+public class RunawayMode extends Mode {
     public RunawayMode() {
         super();
     }

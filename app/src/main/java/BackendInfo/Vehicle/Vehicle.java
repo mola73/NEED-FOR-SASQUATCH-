@@ -1,4 +1,4 @@
-package BackendInfo;
+package BackendInfo.Vehicle;
 
 public class Vehicle {
 

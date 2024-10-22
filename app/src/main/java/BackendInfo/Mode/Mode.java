@@ -1,4 +1,4 @@
-package BackendInfo;
+package BackendInfo.Mode;
 
 public class Mode {
     private double time;
