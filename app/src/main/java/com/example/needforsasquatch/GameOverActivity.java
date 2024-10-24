@@ -13,13 +13,14 @@ public class GameOverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over);
 
-        // Find the 'You Died' ImageView
+
         ImageView youDiedImage = findViewById(R.id.you_died_image);
 
         // Set OnClickListener to navigate back to ModeSelectionActivity
         youDiedImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Navigate to mode selection
                 Intent intent = new Intent(GameOverActivity.this, ModeSelectionActivity.class);
                 startActivity(intent);
                 finish();

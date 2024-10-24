@@ -35,7 +35,7 @@
         <activity
             android:name=".GameOverActivity"
             android:exported="false"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+    />
 
 
     </application>
