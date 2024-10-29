@@ -18,14 +18,18 @@ public class DashModeActivity extends AppCompatActivity {
     private Random random = new Random();
     private MediaPlayer drivingSound;
     private int screenWidth, laneWidth, carWidth;
+    private long startTime;
+    private boolean isGameOver = false;  // Track if game is over
+    private int carSpeed = 3000;  // Initial speed of oncoming cars (3000ms)
+    private static final int SPEED_INCREASE_INTERVAL = 10000;  // Increase speed every 10 seconds
+    private static final int SPEED_INCREMENT = 200;  // Reduce animation duration by 200ms per interval
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash);
 
-        // Stop main menu music when Dash Mode starts
-        MainActivity.stopMenuMusic();
+        MainActivity.stopMenuMusic();  // Stop menu music
 
         mainCar = findViewById(R.id.main_car);
 
@@ -34,7 +38,6 @@ public class DashModeActivity extends AppCompatActivity {
         drivingSound.setLooping(true);
         drivingSound.start();
 
-        // Calculate screen and lane dimensions
         screenWidth = getResources().getDisplayMetrics().widthPixels;
         laneWidth = screenWidth / 3;
         carWidth = mainCar.getLayoutParams().width;
@@ -47,27 +50,32 @@ public class DashModeActivity extends AppCompatActivity {
             return true;
         });
 
-        // Start spawning oncoming cars
+        startTime = System.currentTimeMillis();  // Start the timer
+
+        // Start spawning oncoming cars and initiate speed increases
         spawnOncomingCars();
+        increaseSpeedOverTime();
     }
 
     private void moveCarToLane(float x) {
         float targetX;
         if (x < laneWidth) {
-            targetX = (laneWidth - carWidth) / 2f; // Left lane
+            targetX = (laneWidth - carWidth) / 2f;  // Left lane
         } else if (x < laneWidth * 2) {
-            targetX = laneWidth + (laneWidth - carWidth) / 2f; // Middle lane
+            targetX = laneWidth + (laneWidth - carWidth) / 2f;  // Middle lane
         } else {
-            targetX = 2 * laneWidth + (laneWidth - carWidth) / 2f; // Right lane
+            targetX = 2 * laneWidth + (laneWidth - carWidth) / 2f;  // Right lane
         }
         mainCar.animate().x(targetX).setDuration(300).start();
     }
 
     private void spawnOncomingCars() {
         handler.postDelayed(() -> {
-            createOncomingCar();
-            spawnOncomingCars();
-        }, 2000); // Spawn every 2 seconds
+            if (!isGameOver) {
+                createOncomingCar();
+                spawnOncomingCars();
+            }
+        }, 2000);
     }
 
     private void createOncomingCar() {
@@ -76,17 +84,17 @@ public class DashModeActivity extends AppCompatActivity {
         oncomingCar.setLayoutParams(new RelativeLayout.LayoutParams(
                 mainCar.getLayoutParams().width, mainCar.getLayoutParams().height));
 
-        int lane = random.nextInt(3); // Random lane selection
+        int lane = random.nextInt(3);
         float startX = lane * laneWidth + (laneWidth - carWidth) / 2f;
         oncomingCar.setX(startX);
-        oncomingCar.setY(-200); // Start above the screen
+        oncomingCar.setY(-200);
 
         RelativeLayout road = findViewById(R.id.road);
         road.addView(oncomingCar);
 
         oncomingCar.animate()
                 .translationY(getResources().getDisplayMetrics().heightPixels)
-                .setDuration(3000)
+                .setDuration(carSpeed)  // Use current speed
                 .withEndAction(() -> road.removeView(oncomingCar))
                 .start();
 
@@ -95,46 +103,43 @@ public class DashModeActivity extends AppCompatActivity {
 
     private void checkCollision(ImageView oncomingCar) {
         handler.postDelayed(() -> {
-            // Check if the main car's and oncoming car's bounds intersect
-            if (isCollision(mainCar, oncomingCar)) {
-                gameOver(); // Trigger game over
-            } else {
-                // Re-run the collision check
-                checkCollision(oncomingCar);
+            if (!isGameOver && isCollision(mainCar, oncomingCar)) {
+                gameOver();  // Trigger game over
+            } else if (!isGameOver) {
+                checkCollision(oncomingCar);  // Keep checking for collision
             }
-        }, 50); // Check every 50ms
+        }, 50);
     }
 
-    // Helper method to detect if two views collide
     private boolean isCollision(View v1, View v2) {
         int[] pos1 = new int[2];
         int[] pos2 = new int[2];
         v1.getLocationOnScreen(pos1);
         v2.getLocationOnScreen(pos2);
 
-        int v1Left = pos1[0];
-        int v1Right = v1Left + v1.getWidth();
-        int v1Top = pos1[1];
-        int v1Bottom = v1Top + v1.getHeight();
-
-        int v2Left = pos2[0];
-        int v2Right = v2Left + v2.getWidth();
-        int v2Top = pos2[1];
-        int v2Bottom = v2Top + v2.getHeight();
-
-        return !(v1Right < v2Left || v1Left > v2Right || v1Bottom < v2Top || v1Top > v2Bottom);
+        return !(pos1[0] + v1.getWidth() < pos2[0] || pos1[0] > pos2[0] + v2.getWidth() ||
+                pos1[1] + v1.getHeight() < pos2[1] || pos1[1] > pos2[1] + v2.getHeight());
     }
 
-
     private void gameOver() {
+        isGameOver = true;
+        long elapsedTime = (System.currentTimeMillis() - startTime) / 1000;
+
         Intent intent = new Intent(DashModeActivity.this, GameOverActivity.class);
+        intent.putExtra("SCORE", elapsedTime);  // Pass score to GameOverActivity
         startActivity(intent);
         finish();
     }
 
-
-
-
+    private void increaseSpeedOverTime() {
+        handler.postDelayed(() -> {
+            if (!isGameOver) {
+                // Decrease the animation duration, increasing speed
+                carSpeed = Math.max(carSpeed - SPEED_INCREMENT, 500);
+                increaseSpeedOverTime();  // Schedule the next speed increase
+            }
+        }, SPEED_INCREASE_INTERVAL);
+    }
 
     @Override
     protected void onDestroy() {
