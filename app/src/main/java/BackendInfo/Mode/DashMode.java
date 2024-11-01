@@ -1,4 +1,4 @@
-package BackendInfo.Mode;
+package BackendInfo;
 
 public class DashMode extends Mode {
     private double time;
