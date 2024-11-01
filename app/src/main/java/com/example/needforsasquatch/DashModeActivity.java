@@ -77,6 +77,39 @@ public class DashModeActivity extends AppCompatActivity {
             }
         }, 2000);
     }
+    private void spawnBoost(){
+        // i am not exactly sure if this is write
+        //if the time is low enough to spawn a boost then it is spawned
+        handler.postDelayed(()->{
+            if(boosttime){
+                createOncomingBoost();
+                spawnBoost();
+            }
+        },2000);
+    }
+    private void createOncomingBoost(){ //invincibility boost creation 
+        // TODO: 10/30/2024  Muhammad added this for the boost
+        
+        final ImageView iBoost= new ImageView(this);
+        iBoost.setImageResource(R.drawable.invincibility_boost);
+        iBoost.setLayoutParams(new RelativeLayout.LayoutParams(mainCar.getLayoutParams().width, mainCar.getLayoutParams().height));
+
+        int lane = random.nextInt(3);
+        float startX = lane * laneWidth + (laneWidth - carWidth) / 2f;
+        iBoost.setX(startX);
+        iBoost.setY(-200);
+
+        RelativeLayout road = findViewById(R.id.road);
+        road.addView(iBoost);
+
+        iBoost.animate()
+                .translationY(getResources().getDisplayMetrics().heightPixels)
+                .setDuration(carSpeed)  // Use current speed
+                .withEndAction(() -> road.removeView(iBoost))
+                .start();
+
+        checkCollision(iBoost);
+    }
 
     private void createOncomingCar() {
         final ImageView oncomingCar = new ImageView(this);
