@@ -77,16 +77,16 @@ public class DashModeActivity extends AppCompatActivity {
             }
         }, 2000);
     }
-    private void spawnBoost(){
-        // i am not exactly sure if this is write
-        //if the time is low enough to spawn a boost then it is spawned
-        handler.postDelayed(()->{
-            if(boosttime){
-                createOncomingBoost();
-                spawnBoost();
-            }
-        },2000);
-    }
+//    private void spawnBoost(){
+//        // i am not exactly sure if this is write
+//        //if the time is low enough to spawn a boost then it is spawned
+//        handler.postDelayed(()->{
+//          //  if(boosttime){
+//                createOncomingBoost();
+//                spawnBoost();
+//            }
+//        },2000);
+//    }
     private void createOncomingBoost(){ //invincibility boost creation 
         // TODO: 10/30/2024  Muhammad added this for the boost
         

@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import BackendInfo.Clock;
 
 public class InvincibilityPowerup extends Powerup{
-private
+
     public InvincibilityPowerup() {
         super(new Clock(),10,10);
     }
