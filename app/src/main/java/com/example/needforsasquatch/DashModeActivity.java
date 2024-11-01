@@ -17,56 +17,64 @@ public class DashModeActivity extends AppCompatActivity {
     private Handler handler = new Handler();
     private Random random = new Random();
     private MediaPlayer drivingSound;
-    private int screenWidth, laneWidth, carWidth;
+    private int screenWidth, screenHeight, laneWidth, carWidth, carHeight;
     private long startTime;
-    private boolean isGameOver = false;  // Track if game is over
-    private int carSpeed = 3000;  // Initial speed of oncoming cars (3000ms)
-    private static final int SPEED_INCREASE_INTERVAL = 10000;  // Increase speed every 10 seconds
-    private static final int SPEED_INCREMENT = 200;  // Reduce animation duration by 200ms per interval
+    private boolean isGameOver = false;
+    private int carSpeed = 3000;
+    private static final int SPEED_INCREASE_INTERVAL = 10000;
+    private static final int SPEED_INCREMENT = 200;
+    private static final int SHIELD_DURATION = 10000; // Shield active for 10 seconds
+    private boolean isShieldActive = false; // Track shield status
+
+    private ImageView shield;
+    private static final int SHIELD_SPAWN_INTERVAL = 30000; // Shield spawns every 50 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash);
 
-        MainActivity.stopMenuMusic();  // Stop menu music
+        MainActivity.stopMenuMusic();
 
         mainCar = findViewById(R.id.main_car);
+        shield = findViewById(R.id.shield);
 
-        // Initialize and start driving sound
         drivingSound = MediaPlayer.create(this, R.raw.driving);
         drivingSound.setLooping(true);
         drivingSound.start();
 
         screenWidth = getResources().getDisplayMetrics().widthPixels;
+        screenHeight = getResources().getDisplayMetrics().heightPixels;
         laneWidth = screenWidth / 3;
         carWidth = mainCar.getLayoutParams().width;
+        carHeight = mainCar.getLayoutParams().height;
 
-        // Detect lane taps for movement
         findViewById(R.id.road).setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                moveCarToLane(event.getX());
+                moveCar(event.getX(), event.getY());
             }
             return true;
         });
 
-        startTime = System.currentTimeMillis();  // Start the timer
-
-        // Start spawning oncoming cars and initiate speed increases
+        startTime = System.currentTimeMillis();
         spawnOncomingCars();
         increaseSpeedOverTime();
+        spawnShield(); // Start spawning shields
     }
 
-    private void moveCarToLane(float x) {
-        float targetX;
+    private void moveCar(float x, float y) {
+        float targetX, targetY;
+
         if (x < laneWidth) {
-            targetX = (laneWidth - carWidth) / 2f;  // Left lane
+            targetX = (laneWidth - carWidth) / 2f;
         } else if (x < laneWidth * 2) {
-            targetX = laneWidth + (laneWidth - carWidth) / 2f;  // Middle lane
+            targetX = laneWidth + (laneWidth - carWidth) / 2f;
         } else {
-            targetX = 2 * laneWidth + (laneWidth - carWidth) / 2f;  // Right lane
+            targetX = 2 * laneWidth + (laneWidth - carWidth) / 2f;
         }
-        mainCar.animate().x(targetX).setDuration(300).start();
+
+        targetY = Math.min(Math.max(y - carHeight / 2f, 0), screenHeight - carHeight);
+        mainCar.animate().x(targetX).y(targetY).setDuration(300).start();
     }
 
     private void spawnOncomingCars() {
@@ -114,8 +122,7 @@ public class DashModeActivity extends AppCompatActivity {
     private void createOncomingCar() {
         final ImageView oncomingCar = new ImageView(this);
         oncomingCar.setImageResource(R.drawable.oncoming_car);
-        oncomingCar.setLayoutParams(new RelativeLayout.LayoutParams(
-                mainCar.getLayoutParams().width, mainCar.getLayoutParams().height));
+        oncomingCar.setLayoutParams(new RelativeLayout.LayoutParams(carWidth, carHeight));
 
         int lane = random.nextInt(3);
         float startX = lane * laneWidth + (laneWidth - carWidth) / 2f;
@@ -126,8 +133,8 @@ public class DashModeActivity extends AppCompatActivity {
         road.addView(oncomingCar);
 
         oncomingCar.animate()
-                .translationY(getResources().getDisplayMetrics().heightPixels)
-                .setDuration(carSpeed)  // Use current speed
+                .translationY(screenHeight)
+                .setDuration(carSpeed)
                 .withEndAction(() -> road.removeView(oncomingCar))
                 .start();
 
@@ -137,9 +144,11 @@ public class DashModeActivity extends AppCompatActivity {
     private void checkCollision(ImageView oncomingCar) {
         handler.postDelayed(() -> {
             if (!isGameOver && isCollision(mainCar, oncomingCar)) {
-                gameOver();  // Trigger game over
+                if (!isShieldActive) {
+                    gameOver();
+                } // Ignore collision if shield is active
             } else if (!isGameOver) {
-                checkCollision(oncomingCar);  // Keep checking for collision
+                checkCollision(oncomingCar);
             }
         }, 50);
     }
@@ -154,12 +163,54 @@ public class DashModeActivity extends AppCompatActivity {
                 pos1[1] + v1.getHeight() < pos2[1] || pos1[1] > pos2[1] + v2.getHeight());
     }
 
+    private void spawnShield() {
+        handler.postDelayed(() -> {
+            if (!isGameOver) {
+                int lane = random.nextInt(3);
+                float startX = lane * laneWidth + (laneWidth - carWidth) / 2f;
+                shield.setX(startX);
+                shield.setY(-200);
+                shield.setVisibility(View.VISIBLE);
+
+                shield.animate()
+                        .translationY(screenHeight)
+                        .setDuration(carSpeed * 3)
+                        .withEndAction(() -> shield.setVisibility(View.GONE))
+                        .start();
+
+                checkShieldCollision();
+                spawnShield(); // Schedule next shield spawn
+            }
+        }, SHIELD_SPAWN_INTERVAL);
+    }
+
+    private void checkShieldCollision() {
+        handler.postDelayed(() -> {
+            if (!isGameOver && isCollision(mainCar, shield) && shield.getVisibility() == View.VISIBLE) {
+                activateShield();
+            } else if (!isGameOver) {
+                checkShieldCollision();
+            }
+        }, 50);
+    }
+
+    private void activateShield() {
+        isShieldActive = true;
+        mainCar.setImageResource(R.drawable.main_car_shield); // Change to shielded car
+        shield.setVisibility(View.GONE); // Hide shield
+
+        handler.postDelayed(() -> {
+            isShieldActive = false;
+            mainCar.setImageResource(R.drawable.main_car); // Revert to normal car
+        }, SHIELD_DURATION);
+    }
+
     private void gameOver() {
         isGameOver = true;
         long elapsedTime = (System.currentTimeMillis() - startTime) / 1000;
 
         Intent intent = new Intent(DashModeActivity.this, GameOverActivity.class);
-        intent.putExtra("SCORE", elapsedTime);  // Pass score to GameOverActivity
+        intent.putExtra("SCORE", elapsedTime);
         startActivity(intent);
         finish();
     }
@@ -167,9 +218,8 @@ public class DashModeActivity extends AppCompatActivity {
     private void increaseSpeedOverTime() {
         handler.postDelayed(() -> {
             if (!isGameOver) {
-                // Decrease the animation duration, increasing speed
                 carSpeed = Math.max(carSpeed - SPEED_INCREMENT, 500);
-                increaseSpeedOverTime();  // Schedule the next speed increase
+                increaseSpeedOverTime();
             }
         }, SPEED_INCREASE_INTERVAL);
     }
