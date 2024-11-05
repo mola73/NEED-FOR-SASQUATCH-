@@ -18,6 +18,8 @@ import BackendInfo.DashMode;
 
 public class DashModeActivity extends AppCompatActivity {
 private DashMode backend;
+private long endScore;
+private long timeElapsed;
     private ImageView mainCar;
     private Handler handler = new Handler();
     private Random random = new Random();
@@ -64,11 +66,16 @@ private DashMode backend;
             return true;
         });
         backend.getTime().start();//start the time of the game
-        startTime = backend.getTime().getStarttime();
+
+        startTime = System.currentTimeMillis();
 
         spawnOncomingCars();
         increaseSpeedOverTime();
         spawnShield(); // Start spawning shields
+
+        if (!this.isGameOver){// this is for displaying elapsed time periodically
+            DT();
+        }
     }
 
     private void moveCar(float x, float y) {
@@ -171,7 +178,11 @@ private DashMode backend;
         }, 50);
     }
 
-
+private void DT(){
+        if(backend.getTime().elapsed()/30==0){
+            displayTime();
+        }
+}
     private void activateShield() {
        displayTime();
 
@@ -189,7 +200,7 @@ private DashMode backend;
 
 
         isGameOver = true;
-        double elapsedTime = backend.getTime().elapsed();
+        long elapsedTime =(long) backend.getTime().elapsed();
 
         Intent intent = new Intent(DashModeActivity.this, GameOverActivity.class);
         intent.putExtra("SCORE", elapsedTime);

@@ -1,9 +1,10 @@
 package BackendInfo;
 
+import BackendInfo.Mode.Mode;
 import BackendInfo.Vehicle.DashVehicle;
 import BackendInfo.Vehicle.Stopwatch;
 
-public class DashMode extends BackendInfo.Mode {
+public class DashMode extends Mode {
     private Stopwatch time;
     private int score;
     private DashVehicle car;

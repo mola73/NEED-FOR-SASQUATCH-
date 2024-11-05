@@ -21,7 +21,7 @@ public class  Stopwatch {
     public Stopwatch start() {  //Starts the stopwatch Has noeffect if the stopwatch is already started.
         // Does not reset the time.
         if (!this.started) {
-            this.starttime = System.nanoTime();//update elapsed time and track the time the watch was started to determine isRunning method.
+            this.starttime = System.currentTimeMillis();//update elapsed time and track the time the watch was started to determine isRunning method.
 
             this.started = true;
             this.stopped = false;
@@ -31,7 +31,7 @@ public class  Stopwatch {
 
     public Stopwatch stop() { // Stops the stopwatch. Has no effect if the stopwatch is already stopped.Does not reset the time.Returns this.
         if (!stopped) {
-            this.elapsedtime = System.nanoTime() - this.starttime; //update elapsed time and track the time the watch was stopped to detirmine isRunning method.
+            this.elapsedtime = System.currentTimeMillis() - this.starttime; //update elapsed time and track the time the watch was stopped to detirmine isRunning method.
             stopped = true;
             this.started = false;
         }
@@ -47,10 +47,10 @@ public class  Stopwatch {
 
     public double elapsed() { //Returns the elapsed CPU time in seconds at the time of the call.
         if (started) {
-            this.elapsedtime = System.nanoTime() - this.starttime;
+            this.elapsedtime = (System.currentTimeMillis() - this.starttime);
 
         }
-        return this.elapsedtime / 100_000_000; //
+        return this.elapsedtime / 1000; //
     }
 
     public boolean isRunning() {
@@ -59,9 +59,9 @@ public class  Stopwatch {
     }
     public String elapsedhms(){
         int hours= (int) elapsed()/3600;
-        int minutes= (int)elapsed()/60;
-        int seconds=(int)elapsed() %60;
-        return String.format("%d hours\n %d min.\n %d sec.\n",hours,minutes,seconds);
+        int minutes= (int)(elapsed()%3600)/60;
+        int seconds=(int)elapsed()%3600%60;
+        return String.format("%dH/%dM./%dS.",hours,minutes,seconds);
     }
 
     public String toString() {
