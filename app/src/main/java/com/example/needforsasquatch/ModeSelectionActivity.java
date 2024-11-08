@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
-import BackendInfo.DestructionMode;
-
 public class ModeSelectionActivity extends AppCompatActivity {
 
     @Override
