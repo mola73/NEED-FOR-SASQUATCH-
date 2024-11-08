@@ -2,9 +2,19 @@ package BackendInfo.Powerup;
 
 import androidx.annotation.NonNull;
 
+import com.example.needforsasquatch.DashModeActivity;
+
 import BackendInfo.Clock;
 
-public class Powerup {
+public class Powerup  {
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
     private Boolean isActive;
     private Clock timer;
     private double x;//x coordinates of boost
@@ -20,6 +30,7 @@ public class Powerup {
         this.isVisible = true;
         this.isUsed = false;
     }
+
 
     public Powerup(Clock timer, float x, float y) {
         this.isActive=true;

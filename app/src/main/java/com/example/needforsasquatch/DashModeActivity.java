@@ -6,19 +6,26 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.Random;
 
-public class DashModeActivity extends AppCompatActivity {
+import BackendInfo.DashMode;
 
+public class DashModeActivity extends AppCompatActivity {
+private DashMode backend;
+private long endScore;
+private long timeElapsed;
     private ImageView mainCar;
     private Handler handler = new Handler();
     private Random random = new Random();
     private MediaPlayer drivingSound;
     private int screenWidth, screenHeight, laneWidth, carWidth, carHeight;
-    private long startTime;
+    private double startTime;
     private boolean isGameOver = false;
     private int carSpeed = 3000;
     private static final int SPEED_INCREASE_INTERVAL = 10000;
@@ -33,6 +40,9 @@ public class DashModeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash);
+        backend= new DashMode();
+
+
 
         MainActivity.stopMenuMusic();
 
@@ -55,11 +65,17 @@ public class DashModeActivity extends AppCompatActivity {
             }
             return true;
         });
+        backend.getTime().start();//start the time of the game
 
         startTime = System.currentTimeMillis();
+
         spawnOncomingCars();
         increaseSpeedOverTime();
         spawnShield(); // Start spawning shields
+
+        if (!this.isGameOver){// this is for displaying elapsed time periodically
+            DT();
+        }
     }
 
     private void moveCar(float x, float y) {
@@ -85,6 +101,7 @@ public class DashModeActivity extends AppCompatActivity {
             }
         }, 2000);
     }
+
 
     private void createOncomingCar() {
         final ImageView oncomingCar = new ImageView(this);
@@ -161,7 +178,14 @@ public class DashModeActivity extends AppCompatActivity {
         }, 50);
     }
 
+private void DT(){
+        if(backend.getTime().elapsed()/30==0){
+            displayTime();
+        }
+}
     private void activateShield() {
+       displayTime();
+
         isShieldActive = true;
         mainCar.setImageResource(R.drawable.main_car_shield); // Change to shielded car
         shield.setVisibility(View.GONE); // Hide shield
@@ -173,8 +197,10 @@ public class DashModeActivity extends AppCompatActivity {
     }
 
     private void gameOver() {
+
+
         isGameOver = true;
-        long elapsedTime = (System.currentTimeMillis() - startTime) / 1000;
+        long elapsedTime =(long) backend.getTime().elapsed();
 
         Intent intent = new Intent(DashModeActivity.this, GameOverActivity.class);
         intent.putExtra("SCORE", elapsedTime);
@@ -197,5 +223,8 @@ public class DashModeActivity extends AppCompatActivity {
         if (drivingSound != null) {
             drivingSound.release();
         }
+    }
+    private void displayTime(){
+        Toast.makeText(this, backend.getTime().elapsedhms(), Toast.LENGTH_SHORT).show();//check time again
     }
 }

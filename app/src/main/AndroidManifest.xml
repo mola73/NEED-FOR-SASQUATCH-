@@ -31,12 +31,6 @@
             android:name=".DashModeActivity"
             android:exported="false" />
 
-        <!-- DestructionModeActivity -->
-        <activity
-            android:name=".DestructionModeActivity"
-            android:exported="false"
-            />
-
         <!-- GameOverActivity: Fullscreen theme for the 'You Died' image -->
         <activity
             android:name=".GameOverActivity"

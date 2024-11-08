@@ -10,8 +10,10 @@ public class InvincibilityPowerup extends Powerup{
         super(new Clock(),10,10);
     }
 
-    public InvincibilityPowerup(Clock timer, float x, float y) {
-        super(timer, x, y);
+    public InvincibilityPowerup(float x, float y) {
+        super();
+        this.setX(x);
+        this.setY(y);
     }
 
     public void boostAnnouncement(){

@@ -1,20 +1,23 @@
-package BackendInfo;
+package BackendInfo.Mode;
+
+import BackendInfo.Vehicle.Stopwatch;
 
 public class Mode {
-    private double time;
+    private Stopwatch time;
     private int score;
 
+
     public Mode() {
-
+this.time=new Stopwatch();
+this.score=0;
     }
 
-    public double getTime() {
-        return time;
+    public Stopwatch getTime() {
+        return time ;
     }
 
-    public void setTime(double time) {
-        this.time = time;
-    }
+
+
 
     public int getScore() {
         return score;
@@ -24,7 +27,7 @@ public class Mode {
         this.score = score;
     }
 
-    public Mode(int score, double time) {
+    public Mode(int score, Stopwatch time) {
         this.score = score;
         this.time=time;
     }
