@@ -14,12 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Random;
 
-import BackendInfo.Mode.DashMode;
 
-public class DashModeActivity extends AppCompatActivity {
-    private DashMode backend;
+import BackendInfo.Mode.RunawayMode;
+
+public class RunawayModeActivity extends AppCompatActivity {
+    private RunawayMode backend;
     private long endScore;
     private long timeElapsed;
+
     private ImageView mainCar;
     private Handler handler = new Handler();
     private Random random = new Random();
@@ -30,22 +32,21 @@ public class DashModeActivity extends AppCompatActivity {
     private int carSpeed = 3000;
     private static final int SPEED_INCREASE_INTERVAL = 10000;
     private static final int SPEED_INCREMENT = 200;
-    private static final int SHIELD_DURATION = 10000; // Shield active for 10 seconds
     private boolean isShieldActive = false; // Track shield status
     private ImageView shield;
     private static final int SHIELD_SPAWN_INTERVAL = 30000; // Shield spawns every 50 seconds
+    private static final int SHIELD_DURATION = 10000; // Shield active for 10 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dash);
-        backend = new DashMode();
+        setContentView(R.layout.activity_runaway);
+        backend = new RunawayMode();
         MainActivity.stopMenuMusic();
-
-
 
         mainCar = findViewById(R.id.main_car);
         shield = findViewById(R.id.shield);
+
 
         drivingSound = MediaPlayer.create(this, R.raw.driving);
         drivingSound.setLooping(true);
@@ -66,14 +67,13 @@ public class DashModeActivity extends AppCompatActivity {
         backend.getTime().start();//start the time of the game
 
         startTime = System.currentTimeMillis();
-
         spawnOncomingCars();
         increaseSpeedOverTime();
         spawnShield(); // Start spawning shields
-
         if (!this.isGameOver) {// this is for displaying elapsed time periodically
             DT();
         }
+
     }
 
     private void moveCar(float x, float y) {
@@ -201,7 +201,7 @@ public class DashModeActivity extends AppCompatActivity {
         isGameOver = true;
         long elapsedTime = (long) backend.getTime().elapsed();
 
-        Intent intent = new Intent(DashModeActivity.this, GameOverActivity.class);
+        Intent intent = new Intent(RunawayModeActivity.this, GameOverActivity.class);
         intent.putExtra("SCORE", elapsedTime);
         startActivity(intent);
         finish();
@@ -227,4 +227,5 @@ public class DashModeActivity extends AppCompatActivity {
     private void displayTime() {
         Toast.makeText(this, backend.getTime().elapsedhms(), Toast.LENGTH_SHORT).show();//check time again
     }
+
 }

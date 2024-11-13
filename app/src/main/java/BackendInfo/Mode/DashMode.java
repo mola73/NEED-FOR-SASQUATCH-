@@ -1,4 +1,4 @@
-package BackendInfo;
+package BackendInfo.Mode;
 
 import BackendInfo.Mode.Mode;
 import BackendInfo.Vehicle.DashVehicle;
@@ -8,6 +8,16 @@ public class DashMode extends Mode {
     private Stopwatch time;
     private int score;
     private DashVehicle car;
+
+    public DashMode() {
+        super();
+        this.time = new Stopwatch();//initialize a new stopwatch for dashmode
+    }
+
+    public DashMode(int score, Stopwatch time) {
+        super(score, time);
+
+    }
 
     @Override
     public Stopwatch getTime() {
@@ -35,18 +45,6 @@ public class DashMode extends Mode {
     public void setCar(DashVehicle car) {
         this.car = car;
     }
-
-    public DashMode(){
-super();
-this.time=new Stopwatch();//initialize a new stopwatch for dashmode
-    }
-
-    public DashMode(int score, Stopwatch time) {
-        super(score, time);
-
-    }
-
-
 
 
 }
