@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         menuMusic.start();
 
         ImageButton startButton = findViewById(R.id.start_button);
-        startButton.setOnClickListener(new View.OnClickListener() {
+        startButton.setOnClickListener(new View.OnClickListener() {//this the button will send the user to the mode slection page
             @Override
             public void onClick(View v) {
                 // Navigate to mode selection
