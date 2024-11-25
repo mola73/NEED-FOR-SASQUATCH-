@@ -43,7 +43,6 @@ public class DashModeActivity extends AppCompatActivity {
         MainActivity.stopMenuMusic();
 
 
-
         mainCar = findViewById(R.id.main_car);
         shield = findViewById(R.id.shield);
 
@@ -177,7 +176,7 @@ public class DashModeActivity extends AppCompatActivity {
     }
 
     private void DT() {
-        if (backend.getTime().elapsed() / 30 == 0) {
+        if (backend.getTime().elapsed() % 10 == 0) {
             displayTime();
         }
     }

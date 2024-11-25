@@ -7,7 +7,8 @@ B. One checkpoint should be around 1 minute of play time.
 
      */
     private Boolean hasArrived;
-    private double xCoordinate;
+    private int location;
+    private int checkpointcount;
 
     public Boolean getHasArrived() {
         return hasArrived;
@@ -17,19 +18,60 @@ B. One checkpoint should be around 1 minute of play time.
         this.hasArrived = hasArrived;
     }
 
-    public double getxCoordinate() {
-        return xCoordinate;
+    public int getLocation() {
+        return location;
     }
 
-    public void setxCoordinate(double xCoordinate) {
-        this.xCoordinate = xCoordinate;
+    public void setLocation(int location) {
+        this.location = location;
     }
 
-    public Checkpoint (Boolean hasArrived, double xCoordinate) {
+    public Checkpoint(Boolean hasArrived, int xCoordinate) {
         this.hasArrived = hasArrived;
-        this.xCoordinate = xCoordinate;
+        this.location = xCoordinate;
+        this.checkpointcount = 1;
     }
-    public void getAnnouncemnent(){
-        System.out.println("The vehicle has passed the checkpoint");
+
+    public int getCheckpointcount() {
+        return checkpointcount;
+    }
+
+    public void incrementCheckpointcount() {
+        this.checkpointcount = checkpointcount + 1;
+    }
+
+    public Checkpoint(int time) {
+        this.hasArrived = false;
+        this.location = time;
+        this.checkpointcount = 1;
+    }
+
+    public void reached() {
+        this.hasArrived = true;
+
+    }
+    public boolean hasWon(){
+        if(this.checkpointcount==11){
+            return true;
+        }
+        return false;
+    }
+
+    public void update() {
+        if (this.hasArrived) {
+            incrementCheckpointcount();
+            this.setLocation(this.location * 2);
+            this.hasArrived = false;
+        }
+    }
+
+    public Checkpoint newCheckpoint(int newtime) {
+        return new Checkpoint(newtime);
+    }
+
+    public String announcepass() {
+
+
+        return String.format("The vehicle has passed checkpoint %d", this.checkpointcount);
     }
 }

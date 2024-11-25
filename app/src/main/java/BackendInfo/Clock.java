@@ -9,22 +9,25 @@ public class Clock {
     }
 
     public Clock() {
-        this.time=15;
+        this.time = 15;
     }
 
-    public Clock getNewClock(double giventime){// what time will the clock start from
+    public Clock getNewClock(double giventime) {// what time will the clock start from
         return new Clock(giventime);
     }
 
-    private void starTime(){
+    private void starTime() {
         //implementation goes here
     }
-    private void stopTime(){
+
+    private void stopTime() {
         //implementation goes here
     }
-    private void resetTime(){
+
+    private void resetTime() {
         this.setTime(0);
     }
+
     public double getTime() {
         return time;
     }
