@@ -6,9 +6,12 @@ public class Stopwatch {
     private boolean started;
     private boolean stopped;
     private double elapsedtime;
-
+    private double endTime;
     public double getStarttime() {
         return starttime;
+    }
+    public void setEndTime(double endTime){
+        this.endTime =endTime;
     }
 
     public Stopwatch() {
@@ -17,6 +20,7 @@ public class Stopwatch {
         this.started = false;
 
     }
+
 
     public Stopwatch start() {  //Starts the stopwatch Has noeffect if the stopwatch is already started.
         // Does not reset the time.
@@ -36,6 +40,9 @@ public class Stopwatch {
             this.started = false;
         }
         return this;
+    }
+    public Stopwatch(double endTime){
+        this.endTime = endTime;
     }
 
     public Stopwatch reset() {// Resets the elapsed time to zero.Neither starts nor stops the stopwatch.Returnsthis.
