@@ -4,8 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-
 import androidx.appcompat.app.AppCompatActivity;
+
+
 
 public class ModeSelectionActivity extends AppCompatActivity {
 
@@ -13,8 +14,6 @@ public class ModeSelectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mode_selection);
-
-        //dash mode
 
         ImageButton dashButton = findViewById(R.id.dash_button);
 
@@ -44,4 +43,3 @@ public class ModeSelectionActivity extends AppCompatActivity {
         });
     }
 }
-//issue is not here

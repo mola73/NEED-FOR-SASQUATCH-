@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.Random;
 
 import BackendInfo.Mode.DashMode;
@@ -32,6 +31,7 @@ public class DashModeActivity extends AppCompatActivity {
     private static final int SPEED_INCREMENT = 200;
     private static final int SHIELD_DURATION = 10000; // Shield active for 10 seconds
     private boolean isShieldActive = false; // Track shield status
+
     private ImageView shield;
     private static final int SHIELD_SPAWN_INTERVAL = 30000; // Shield spawns every 50 seconds
 
@@ -41,7 +41,6 @@ public class DashModeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dash);
         backend = new DashMode();
         MainActivity.stopMenuMusic();
-
 
         mainCar = findViewById(R.id.main_car);
         shield = findViewById(R.id.shield);
@@ -66,13 +65,17 @@ public class DashModeActivity extends AppCompatActivity {
 
         startTime = System.currentTimeMillis();
 
-        spawnOncomingCars();
+        /*spawnOncomingCars()*/
+        spawnOncomingObjects();
         increaseSpeedOverTime();
         spawnShield(); // Start spawning shields
 
         if (!this.isGameOver) {// this is for displaying elapsed time periodically
             DT();
         }
+
+        increaseSpeedOverTime(); // Gradual speed increase
+        spawnShield();
     }
 
     private void moveCar(float x, float y) {
@@ -90,46 +93,54 @@ public class DashModeActivity extends AppCompatActivity {
         mainCar.animate().x(targetX).y(targetY).setDuration(300).start();
     }
 
-    private void spawnOncomingCars() {
+    private void spawnOncomingObjects() {
         handler.postDelayed(() -> {
             if (!isGameOver) {
-                createOncomingCar();
-                spawnOncomingCars();
+                createOncomingObject();
+                spawnOncomingObjects(); // Recursive spawning
             }
         }, 2000);
     }
 
+    private void createOncomingObject() {
+        boolean spawnCar = random.nextBoolean(); // Randomly decide to spawn a car or hole
+        final ImageView oncomingObject = new ImageView(this);
 
-    private void createOncomingCar() {
-        final ImageView oncomingCar = new ImageView(this);
-        oncomingCar.setImageResource(R.drawable.oncoming_car);
-        oncomingCar.setLayoutParams(new RelativeLayout.LayoutParams(carWidth, carHeight));
+        if (spawnCar) {
+            oncomingObject.setImageResource(R.drawable.oncoming_car);
+        } else {
+            oncomingObject.setImageResource(R.drawable.hole);
+        }
+
+        oncomingObject.setLayoutParams(new RelativeLayout.LayoutParams(carWidth, carHeight));
 
         int lane = random.nextInt(3);
         float startX = lane * laneWidth + (laneWidth - carWidth) / 2f;
-        oncomingCar.setX(startX);
-        oncomingCar.setY(-200);
+        oncomingObject.setX(startX);
+        oncomingObject.setY(-200);
 
         RelativeLayout road = findViewById(R.id.road);
-        road.addView(oncomingCar);
+        road.addView(oncomingObject);
 
-        oncomingCar.animate()
+        oncomingObject.animate()
                 .translationY(screenHeight)
                 .setDuration(carSpeed)
-                .withEndAction(() -> road.removeView(oncomingCar))
+                .withEndAction(() -> road.removeView(oncomingObject))
                 .start();
 
-        checkCollision(oncomingCar);
+        checkCollision(oncomingObject, spawnCar);
     }
 
-    private void checkCollision(ImageView oncomingCar) {
+    private void checkCollision(ImageView oncomingObject, boolean isCar) {
         handler.postDelayed(() -> {
-            if (!isGameOver && isCollision(mainCar, oncomingCar)) {
-                if (!isShieldActive) {
+            if (!isGameOver && isCollision(mainCar, oncomingObject)) {
+                if (!isCar && !isShieldActive) {
                     gameOver();
-                } // Ignore collision if shield is active
+                } else if (isCar && !isShieldActive) {
+                    gameOver();
+                }
             } else if (!isGameOver) {
-                checkCollision(oncomingCar);
+                checkCollision(oncomingObject, isCar);
             }
         }, 50);
     }
@@ -195,8 +206,6 @@ public class DashModeActivity extends AppCompatActivity {
     }
 
     private void gameOver() {
-
-
         isGameOver = true;
         long elapsedTime = (long) backend.getTime().elapsed();
 
