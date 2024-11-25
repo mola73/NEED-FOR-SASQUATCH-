@@ -1,6 +1,6 @@
 package BackendInfo.Vehicle;
 
-public class DashVehicle extends Vehicle{
+public class DashVehicle extends Vehicle {
 
     public Boolean getInvincible() {
         return isInvincible;
@@ -11,7 +11,8 @@ public class DashVehicle extends Vehicle{
     }
 
     private Boolean isInvincible;
-    public DashVehicle(){
+
+    public DashVehicle() {
         super();
     }
 }

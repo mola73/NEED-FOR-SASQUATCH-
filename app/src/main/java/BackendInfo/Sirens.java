@@ -3,11 +3,11 @@ package BackendInfo;
 public class Sirens {
     public Boolean isFlashing;
 
-    public void sirensSwitch(){
-        if(isFlashing){
+    public void sirensSwitch() {
+        if (isFlashing) {
             this.turnOff();
 
-        }else{
+        } else {
             turnOff();
         }
 
@@ -21,10 +21,11 @@ public class Sirens {
         isFlashing = flashing;
     }
 
-    public void turnOff(){
+    public void turnOff() {
         this.setFlashing(false);
     }
-    public void turnOn(){
+
+    public void turnOn() {
         this.setFlashing(true);
     }
 }

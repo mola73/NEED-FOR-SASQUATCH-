@@ -12,51 +12,41 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Random;
-
-
+//import BackendInfo;
 import BackendInfo.Mode.RunawayMode;
 
+// TODO: 11/18/2024 implement checkpoints as time increases  and connect this with boost implememntation
 public class RunawayModeActivity extends AppCompatActivity {
     private RunawayMode backend;
-    private long endScore;
-    private long timeElapsed;
+
+    // private long endScore;
+    //private long timeElapsed;
 
     private ImageView mainCar;
     private Handler handler = new Handler();
-    private Random random = new Random();
-    private MediaPlayer drivingSound;
+
+    private MediaPlayer sirenSound;
     private int screenWidth, screenHeight, laneWidth, carWidth, carHeight;
-    private double startTime;
+
     private boolean isGameOver = false;
     private int carSpeed = 3000;
     private static final int SPEED_INCREASE_INTERVAL = 10000;
     private static final int SPEED_INCREMENT = 200;
-    private boolean isShieldActive = false; // Track shield status
-    private ImageView shield;
-    private static final int SHIELD_SPAWN_INTERVAL = 30000; // Shield spawns every 50 seconds
-    private static final int SHIELD_DURATION = 10000; // Shield active for 10 seconds
+    private ImageView nitro;
+    private static final int NITRO_SPAWN_INTERVAL = 30000;
+    private boolean isNitroActive = false; // Track shield status
+    private static final int NITRO_DURATION = 10000; // Shield active for 10 seconds
+    private boolean isShieldActive = false;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runaway);
-        backend = new RunawayMode();
-        MainActivity.stopMenuMusic();
-
         mainCar = findViewById(R.id.main_car);
-        shield = findViewById(R.id.shield);
+        nitro = findViewById(R.id.shield);//i am not sure if this is correct
+        backend = new RunawayMode(mainCar, 5);//first checkpoint  happens after 20 seconds.
+        MainActivity.stopMenuMusic();
+        configuration();
 
-
-        drivingSound = MediaPlayer.create(this, R.raw.driving);
-        drivingSound.setLooping(true);
-        drivingSound.start();
-
-        screenWidth = getResources().getDisplayMetrics().widthPixels;
-        screenHeight = getResources().getDisplayMetrics().heightPixels;
-        laneWidth = screenWidth / 3;
-        carWidth = mainCar.getLayoutParams().width;
-        carHeight = mainCar.getLayoutParams().height;
 
         findViewById(R.id.road).setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -64,17 +54,28 @@ public class RunawayModeActivity extends AppCompatActivity {
             }
             return true;
         });
-        backend.getTime().start();//start the time of the game
 
-        startTime = System.currentTimeMillis();
+        backend.getTime().start(); // NEW ADDITION start the time for the game
+
         spawnOncomingCars();
         increaseSpeedOverTime();
-        spawnShield(); // Start spawning shields
-        if (!this.isGameOver) {// this is for displaying elapsed time periodically
-            DT();
-        }
+        checkCheckpoint();
+        spawnNitro();
+    }
+
+    private void configuration() {
+        sirenSound = MediaPlayer.create(this, R.raw.sirens);
+        sirenSound.setLooping(true);
+        sirenSound.start();
+
+        screenWidth = getResources().getDisplayMetrics().widthPixels;
+        screenHeight = getResources().getDisplayMetrics().heightPixels;
+        laneWidth = screenWidth / 3;
+        carWidth = backend.getCar().getMainCar().getLayoutParams().width;
+        carHeight = backend.getCar().getMainCar().getLayoutParams().height;
 
     }
+
 
     private void moveCar(float x, float y) {
         float targetX, targetY;
@@ -88,7 +89,7 @@ public class RunawayModeActivity extends AppCompatActivity {
         }
 
         targetY = Math.min(Math.max(y - carHeight / 2f, 0), screenHeight - carHeight);
-        mainCar.animate().x(targetX).y(targetY).setDuration(300).start();
+        backend.getCar().getMainCar().animate().x(targetX).y(targetY).setDuration(300).start();
     }
 
     private void spawnOncomingCars() {
@@ -103,10 +104,10 @@ public class RunawayModeActivity extends AppCompatActivity {
 
     private void createOncomingCar() {
         final ImageView oncomingCar = new ImageView(this);
-        oncomingCar.setImageResource(R.drawable.oncoming_car);
+        oncomingCar.setImageResource(R.drawable.roncoming_car);
         oncomingCar.setLayoutParams(new RelativeLayout.LayoutParams(carWidth, carHeight));
 
-        int lane = random.nextInt(3);
+        int lane = backend.getRandom().nextInt(3);
         float startX = lane * laneWidth + (laneWidth - carWidth) / 2f;
         oncomingCar.setX(startX);
         oncomingCar.setY(-200);
@@ -123,16 +124,43 @@ public class RunawayModeActivity extends AppCompatActivity {
         checkCollision(oncomingCar);
     }
 
+    public void checkCheckpoint() {
+        handler.postDelayed(() -> {
+            if (backend.getCheckpoint().getCheckpointcount() == 11) {
+                gameOver();// TODO: 11/18/2024 make this into you win page not gae over
+            }
+            if (backend.getTime().elapsed() >= backend.getCheckpoint().getLocation() && !isGameOver) {
+                checkpointNotification();
+                backend.getCheckpoint().reached();
+                backend.getCheckpoint().update();
+            }
+            if (!isGameOver) {
+                checkCheckpoint();
+            }
+        }, 50);
+
+    }
+
+    public void checkpointNotification() {
+        Toast.makeText(this, String.format("checkpoint %d has been passed", this.backend.getCheckpoint().getCheckpointcount()), Toast.LENGTH_LONG).show();
+
+    }
+
     private void checkCollision(ImageView oncomingCar) {
         handler.postDelayed(() -> {
             if (!isGameOver && isCollision(mainCar, oncomingCar)) {
-                if (!isShieldActive) {
-                    gameOver();
-                } // Ignore collision if shield is active
+
+                gameOver();
+
+
             } else if (!isGameOver) {
                 checkCollision(oncomingCar);
             }
         }, 50);
+    }
+
+    public void displayLives() {//this only works when the game is over
+        Toast.makeText(this, String.format("You have  %d lives left ", this.backend.getLifecount()), Toast.LENGTH_SHORT).show();
     }
 
     private boolean isCollision(View v1, View v2) {
@@ -145,64 +173,71 @@ public class RunawayModeActivity extends AppCompatActivity {
                 pos1[1] + v1.getHeight() < pos2[1] || pos1[1] > pos2[1] + v2.getHeight());
     }
 
-    private void spawnShield() {
+    private void spawnNitro() {
         handler.postDelayed(() -> {
             if (!isGameOver) {
-                int lane = random.nextInt(3);
+                int lane = backend.getRandom().nextInt(3);
                 float startX = lane * laneWidth + (laneWidth - carWidth) / 2f;
-                shield.setX(startX);
-                shield.setY(-200);
-                shield.setVisibility(View.VISIBLE);
+                nitro.setX(startX);
+                nitro.setY(-200);
+                nitro.setVisibility(View.VISIBLE);
 
-                shield.animate()
+                nitro.animate()
                         .translationY(screenHeight)
                         .setDuration(carSpeed * 3)
-                        .withEndAction(() -> shield.setVisibility(View.GONE))
+                        .withEndAction(() -> nitro.setVisibility(View.GONE))
                         .start();
 
                 checkShieldCollision();
-                spawnShield(); // Schedule next shield spawn
+                spawnNitro(); // Schedule next shield spawn
             }
-        }, SHIELD_SPAWN_INTERVAL);
+        }, NITRO_SPAWN_INTERVAL);
     }
 
     private void checkShieldCollision() {
         handler.postDelayed(() -> {
-            if (!isGameOver && isCollision(mainCar, shield) && shield.getVisibility() == View.VISIBLE) {
-                activateShield();
+            if (!isGameOver && isCollision(backend.getCar().getMainCar(), nitro) && nitro.getVisibility() == View.VISIBLE) {
+                activateNitro();
             } else if (!isGameOver) {
                 checkShieldCollision();
             }
         }, 50);
     }
 
-    private void DT() {
-        if (backend.getTime().elapsed() / 30 == 0) {
-            displayTime();
-        }
-    }
 
-    private void activateShield() {
-        displayTime();
+    private void activateNitro() {
+        // displayTime();
 
-        isShieldActive = true;
-        mainCar.setImageResource(R.drawable.main_car_shield); // Change to shielded car
-        shield.setVisibility(View.GONE); // Hide shield
+        backend.getCheckpoint().update();
+        boostcheckpoint();
+
+
+        isNitroActive = true;
+        backend.getCar().getMainCar().setImageResource(R.drawable.runaway_car_nitro); // Change to shielded car
+
+        nitro.setVisibility(View.GONE); // Hide shield
+
 
         handler.postDelayed(() -> {
-            isShieldActive = false;
-            mainCar.setImageResource(R.drawable.main_car); // Revert to normal car
-        }, SHIELD_DURATION);
+            isNitroActive = false;
+            backend.getCar().getMainCar().setImageResource(R.drawable.main_car); // Revert to normal car
+        }, NITRO_DURATION);
     }
+
+    public void boostcheckpoint() {
+        String a = String.format("You have been boosted to checkpoint %d", backend.getCheckpoint().getCheckpointcount());
+        Toast.makeText(this, a, Toast.LENGTH_SHORT).show();
+    }
+
 
     private void gameOver() {
 
 
         isGameOver = true;
-        long elapsedTime = (long) backend.getTime().elapsed();
+        long elapsedDistance = (long) backend.getTime().elapsed();
 
         Intent intent = new Intent(RunawayModeActivity.this, GameOverActivity.class);
-        intent.putExtra("SCORE", elapsedTime);
+        intent.putExtra("SCORE", elapsedDistance);
         startActivity(intent);
         finish();
     }
@@ -219,13 +254,14 @@ public class RunawayModeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (drivingSound != null) {
-            drivingSound.release();
+        if (sirenSound != null) {
+            sirenSound.release();
         }
     }
 
     private void displayTime() {
-        Toast.makeText(this, backend.getTime().elapsedhms(), Toast.LENGTH_SHORT).show();//check time again
+        Toast.makeText(this, backend.getTime().elapsed(), Toast.LENGTH_SHORT).show();//check time again
     }
+
 
 }

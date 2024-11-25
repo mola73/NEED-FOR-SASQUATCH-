@@ -28,7 +28,8 @@ public class Score {
     public void setRmScore(int rmScore) {
         this.rmScore = rmScore;
     }
-    public void announcement(){
+
+    public void announcement() {
         System.out.println("The scores should be here");
         // TODO: 10/21/2024  implement binary tree and hash table for scoreboard 
     }

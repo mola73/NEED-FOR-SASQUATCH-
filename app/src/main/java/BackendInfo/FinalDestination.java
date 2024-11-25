@@ -1,9 +1,9 @@
 package BackendInfo;
 
-public class FinalDestination extends Checkpoint{
+public class FinalDestination extends Checkpoint {
 
 
-    public FinalDestination(Boolean hasArrived, double xCoordinate) {
+    public FinalDestination(Boolean hasArrived, int xCoordinate) {
         super(hasArrived, xCoordinate);
     }
 }

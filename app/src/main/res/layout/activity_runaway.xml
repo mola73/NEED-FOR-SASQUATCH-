@@ -14,7 +14,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="80dp"
-        android:src="@drawable/main_car" />
+        android:src="@drawable/runaway_car" />
 
     <!-- Oncoming Car: Left Lane -->
     <ImageView
@@ -24,7 +24,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="35dp"
         android:layout_marginTop="-200dp"
-        android:src="@drawable/oncoming_car"
+        android:src="@drawable/police_car"
         android:visibility="gone" />
 
     <!-- Oncoming Car: Middle Lane -->
@@ -35,7 +35,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-200dp"
-        android:src="@drawable/oncoming_car"
+        android:src="@drawable/police_car"
         android:visibility="gone" />
 
     <!-- Oncoming Car: Right Lane -->
@@ -47,7 +47,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="-200dp"
         android:layout_marginEnd="35dp"
-        android:src="@drawable/oncoming_car"
+        android:src="@drawable/police_car"
         android:visibility="gone" />
     <!-- Shield power-up -->
     <ImageView
@@ -55,9 +55,8 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="-200dp"
-        android:src="@drawable/invincibility_boost"
+        android:src="@drawable/speed_boost"
         android:visibility="gone" />
 
 
-</RelativeLayout>
- <!--//issue is not here-->
+</RelativeLayout><!--//issue is not here-->

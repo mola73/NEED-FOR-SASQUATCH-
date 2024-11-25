@@ -4,10 +4,10 @@ import androidx.annotation.NonNull;
 
 import BackendInfo.Clock;
 
-public class InvincibilityPowerup extends Powerup{
+public class InvincibilityPowerup extends Powerup {
 
     public InvincibilityPowerup() {
-        super(new Clock(),10,10);
+        super(new Clock(), 10, 10);
     }
 
     public InvincibilityPowerup(float x, float y) {
@@ -16,7 +16,7 @@ public class InvincibilityPowerup extends Powerup{
         this.setY(y);
     }
 
-    public void boostAnnouncement(){
+    public void boostAnnouncement() {
         System.out.println("The vehicle is invincible for 15 seconds");
         System.out.println("The boost has been used");
 
