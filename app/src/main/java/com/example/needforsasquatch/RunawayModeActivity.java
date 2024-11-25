@@ -152,7 +152,8 @@ public class RunawayModeActivity extends AppCompatActivity {
 
                 gameOver();
 
-
+            } else if (!isGameOver && backend.getCheckpoint().hasWon()) {
+                Win();
             } else if (!isGameOver) {
                 checkCollision(oncomingCar);
             }
@@ -229,12 +230,22 @@ public class RunawayModeActivity extends AppCompatActivity {
         Toast.makeText(this, a, Toast.LENGTH_SHORT).show();
     }
 
+    private void Win() {
+        long elapsedDistance = (long) backend.getTime().elapsed();
+
+
+        Intent intent = new Intent(RunawayModeActivity.this, WinActivity.class);
+        intent.putExtra("SCORE", elapsedDistance);
+        startActivity(intent);
+        finish();
+    }
 
     private void gameOver() {
 
 
         isGameOver = true;
         long elapsedDistance = (long) backend.getTime().elapsed();
+
 
         Intent intent = new Intent(RunawayModeActivity.this, GameOverActivity.class);
         intent.putExtra("SCORE", elapsedDistance);
