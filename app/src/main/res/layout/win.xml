@@ -5,23 +5,23 @@
 
     <!-- Fullscreen 'You Died' Image -->
     <ImageView
-        android:id="@+id/you_died_image"
+        android:id="@+id/win"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="You Died Image"
+        android:contentDescription="Win Image"
         android:scaleType="fitXY"
-        android:src="@drawable/you_died" />
+        android:src="@drawable/win" />
 
     <!-- Score TextView -->
     <TextView
         android:id="@+id/score_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
         android:text="Your Score: 0"
         android:textColor="@android:color/white"
-        android:textSize="24sp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp" />
+        android:textSize="24sp" />
 </RelativeLayout>

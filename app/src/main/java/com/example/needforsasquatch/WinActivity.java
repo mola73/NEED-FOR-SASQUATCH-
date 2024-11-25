@@ -8,14 +8,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class GameOverActivity extends AppCompatActivity {
+public class WinActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_over);
+        setContentView(R.layout.win);
 
-        ImageView youDiedImage = findViewById(R.id.you_died_image);
+        ImageView win = findViewById(R.id.win);
         TextView scoreTextView = findViewById(R.id.score_text);
 
         // Display the score passed from DashModeActivity
@@ -24,7 +24,7 @@ public class GameOverActivity extends AppCompatActivity {
 
         // Wait 5 seconds, then restart the game from the main menu
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(GameOverActivity.this, MainActivity.class);
+            Intent intent = new Intent(WinActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();

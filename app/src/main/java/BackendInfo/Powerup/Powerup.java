@@ -6,7 +6,7 @@ import com.example.needforsasquatch.DashModeActivity;
 
 import BackendInfo.Clock;
 
-public class Powerup  {
+public class Powerup {
     public void setX(double x) {
         this.x = x;
     }
@@ -33,7 +33,7 @@ public class Powerup  {
 
 
     public Powerup(Clock timer, float x, float y) {
-        this.isActive=true;
+        this.isActive = true;
         this.timer = timer;
         this.x = x;
         this.y = y;
@@ -53,7 +53,7 @@ public class Powerup  {
 //        return new Powerup(c,x,y);
 //    }
 
-    public void removeBoost(){
+    public void removeBoost() {
         // TODO: 10/21/2024
     }
 

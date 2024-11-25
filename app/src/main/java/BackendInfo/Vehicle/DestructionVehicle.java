@@ -1,9 +1,9 @@
 package BackendInfo.Vehicle;
 
-public class DestructionVehicle extends Vehicle{
+public class DestructionVehicle extends Vehicle {
     private Boolean hasTimeBoost;
 
-    public DestructionVehicle(){
+    public DestructionVehicle() {
         super();
     }
 }
