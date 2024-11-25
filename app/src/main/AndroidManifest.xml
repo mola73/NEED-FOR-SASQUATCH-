@@ -34,10 +34,12 @@
         <!-- GameOverActivity: Fullscreen theme for the 'You Died' image -->
         <activity
             android:name=".GameOverActivity"
-            android:exported="false"
-             />
+            android:exported="false" />
 
-
+        <!-- DestructionModeActivity -->
+        <activity
+            android:name=".RunawayModeActivity"
+            android:exported="false" />
 
     </application>
 

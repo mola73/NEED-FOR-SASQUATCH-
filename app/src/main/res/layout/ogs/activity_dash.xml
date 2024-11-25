@@ -48,4 +48,48 @@
         android:src="@drawable/oncoming_car"
         android:visibility="gone" />
 
+    <!-- Oncoming Car: Left Lane -->
+    <ImageView
+        android:id="@+id/hole_left"
+        android:layout_width="40dp"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="-200dp"
+        android:src="@drawable/hole"
+        android:visibility="gone" />
+
+    <!-- Oncoming Car: Middle Lane -->
+    <ImageView
+        android:id="@+id/hole_middle"
+        android:layout_width="40dp"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-200dp"
+        android:src="@drawable/hole"
+        android:visibility="gone" />
+
+    <!-- Oncoming Car: Right Lane -->
+    <ImageView
+        android:id="@+id/hole_right"
+        android:layout_width="40dp"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-200dp"
+        android:layout_marginEnd="35dp"
+        android:src="@drawable/hole"
+        android:visibility="gone" />
+
+    <!-- Shield power-up -->
+    <ImageView
+        android:id="@+id/shield"
+        android:layout_width="40dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="-200dp"
+        android:src="@drawable/shield"
+        android:visibility="gone" />
+
+
 </RelativeLayout>

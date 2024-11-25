@@ -21,13 +21,12 @@ public class DashModeActivity extends AppCompatActivity {
     private long startTime;
     private boolean isGameOver = false;
     private int carSpeed = 3000;
-    private static final int SPEED_INCREASE_INTERVAL = 10000;
     private static final int SPEED_INCREMENT = 200;
     private static final int SHIELD_DURATION = 10000; // Shield active for 10 seconds
     private boolean isShieldActive = false; // Track shield status
 
     private ImageView shield;
-    private static final int SHIELD_SPAWN_INTERVAL = 30000; // Shield spawns every 50 seconds
+    private static final int SHIELD_SPAWN_INTERVAL = 25000; // Shield spawns every 30 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +56,9 @@ public class DashModeActivity extends AppCompatActivity {
         });
 
         startTime = System.currentTimeMillis();
-        spawnOncomingCars();
-        increaseSpeedOverTime();
-        spawnShield(); // Start spawning shields
+        spawnOncomingObjects();
+        increaseSpeedOverTime(); // Gradual speed increase
+        spawnShield();
     }
 
     private void moveCar(float x, float y) {
@@ -77,45 +76,54 @@ public class DashModeActivity extends AppCompatActivity {
         mainCar.animate().x(targetX).y(targetY).setDuration(300).start();
     }
 
-    private void spawnOncomingCars() {
+    private void spawnOncomingObjects() {
         handler.postDelayed(() -> {
             if (!isGameOver) {
-                createOncomingCar();
-                spawnOncomingCars();
+                createOncomingObject();
+                spawnOncomingObjects(); // Recursive spawning
             }
-        }, 2000);
+        }, 2000); // Adjust spawn interval as needed
     }
 
-    private void createOncomingCar() {
-        final ImageView oncomingCar = new ImageView(this);
-        oncomingCar.setImageResource(R.drawable.oncoming_car);
-        oncomingCar.setLayoutParams(new RelativeLayout.LayoutParams(carWidth, carHeight));
+    private void createOncomingObject() {
+        boolean spawnCar = random.nextBoolean(); // Randomly decide to spawn a car or hole
+        final ImageView oncomingObject = new ImageView(this);
+
+        if (spawnCar) {
+            oncomingObject.setImageResource(R.drawable.oncoming_car);
+        } else {
+            oncomingObject.setImageResource(R.drawable.hole);
+        }
+
+        oncomingObject.setLayoutParams(new RelativeLayout.LayoutParams(carWidth, carHeight));
 
         int lane = random.nextInt(3);
         float startX = lane * laneWidth + (laneWidth - carWidth) / 2f;
-        oncomingCar.setX(startX);
-        oncomingCar.setY(-200);
+        oncomingObject.setX(startX);
+        oncomingObject.setY(-200);
 
         RelativeLayout road = findViewById(R.id.road);
-        road.addView(oncomingCar);
+        road.addView(oncomingObject);
 
-        oncomingCar.animate()
+        oncomingObject.animate()
                 .translationY(screenHeight)
                 .setDuration(carSpeed)
-                .withEndAction(() -> road.removeView(oncomingCar))
+                .withEndAction(() -> road.removeView(oncomingObject))
                 .start();
 
-        checkCollision(oncomingCar);
+        checkCollision(oncomingObject, spawnCar);
     }
 
-    private void checkCollision(ImageView oncomingCar) {
+    private void checkCollision(ImageView oncomingObject, boolean isCar) {
         handler.postDelayed(() -> {
-            if (!isGameOver && isCollision(mainCar, oncomingCar)) {
-                if (!isShieldActive) {
+            if (!isGameOver && isCollision(mainCar, oncomingObject)) {
+                if (!isCar && !isShieldActive) {
                     gameOver();
-                } // Ignore collision if shield is active
+                } else if (isCar && !isShieldActive) {
+                    gameOver();
+                }
             } else if (!isGameOver) {
-                checkCollision(oncomingCar);
+                checkCollision(oncomingObject, isCar);
             }
         }, 50);
     }
@@ -146,7 +154,7 @@ public class DashModeActivity extends AppCompatActivity {
                         .start();
 
                 checkShieldCollision();
-                spawnShield(); // Schedule next shield spawn
+                spawnShield();
             }
         }, SHIELD_SPAWN_INTERVAL);
     }
@@ -163,12 +171,12 @@ public class DashModeActivity extends AppCompatActivity {
 
     private void activateShield() {
         isShieldActive = true;
-        mainCar.setImageResource(R.drawable.main_car_shield); // Change to shielded car
-        shield.setVisibility(View.GONE); // Hide shield
+        mainCar.setImageResource(R.drawable.main_car_shield);
+        shield.setVisibility(View.GONE);
 
         handler.postDelayed(() -> {
             isShieldActive = false;
-            mainCar.setImageResource(R.drawable.main_car); // Revert to normal car
+            mainCar.setImageResource(R.drawable.main_car);
         }, SHIELD_DURATION);
     }
 
@@ -188,7 +196,7 @@ public class DashModeActivity extends AppCompatActivity {
                 carSpeed = Math.max(carSpeed - SPEED_INCREMENT, 500);
                 increaseSpeedOverTime();
             }
-        }, SPEED_INCREASE_INTERVAL);
+        }, 10000); // Speed increases every 10 seconds
     }
 
     @Override

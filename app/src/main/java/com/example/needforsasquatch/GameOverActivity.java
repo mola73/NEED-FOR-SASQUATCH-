@@ -17,7 +17,7 @@ public class GameOverActivity extends AppCompatActivity {
         ImageView youDiedImage = findViewById(R.id.you_died_image);
         TextView scoreTextView = findViewById(R.id.score_text);
 
-        // Display the score passed from DashModeActivity
+        // Display the score passed from DashModeActivity/
         long score = getIntent().getLongExtra("SCORE", 0);
         scoreTextView.setText("Score: " + score);
 
@@ -27,6 +27,6 @@ public class GameOverActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
-        }, 5000);  // 5-second delay
+        }, 6000);  // 5-second delay
     }
 }
