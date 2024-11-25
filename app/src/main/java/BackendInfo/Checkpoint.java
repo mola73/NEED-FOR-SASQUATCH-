@@ -43,7 +43,7 @@ B. One checkpoint should be around 1 minute of play time.
     public Checkpoint(int time) {
         this.hasArrived = false;
         this.location = time;
-        this.checkpointcount = 0;
+        this.checkpointcount = 1;
     }
 
     public void reached() {

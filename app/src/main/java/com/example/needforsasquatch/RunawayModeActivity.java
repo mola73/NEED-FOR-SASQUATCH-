@@ -151,7 +151,7 @@ public class RunawayModeActivity extends AppCompatActivity {
 
                 gameOver();
 
-            } else if (!isGameOver && backend.getCheckpoint().hasWon()) {
+            } else if (!isGameOver && backend.getCheckpoint().getCheckpointcount()==11) {
                 Win();
             } else if (!isGameOver) {
                 checkCollision(oncomingCar);
