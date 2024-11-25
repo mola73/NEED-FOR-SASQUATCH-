@@ -13,9 +13,9 @@ public class ModeSelectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mode_selection);
 
-        //dash mode
-
         ImageButton dashButton = findViewById(R.id.dash_button);
+        ImageButton destructionButton = findViewById(R.id.destruction_button);
+
         dashButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -23,15 +23,14 @@ public class ModeSelectionActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //runaway mode
-        ImageButton runawayButton= findViewById(R.id.run_away_button);
-        runawayButton.setOnClickListener(new View.OnClickListener() {
+
+        destructionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(ModeSelectionActivity.this,RunawayModeActivity.class);
+                Intent intent = new Intent(ModeSelectionActivity.this, DestructionModeActivity.class);
                 startActivity(intent);
             }
         });
+
     }
 }
-//issue is not here
