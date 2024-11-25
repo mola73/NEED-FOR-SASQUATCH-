@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 //import BackendInfo;
 import BackendInfo.Mode.RunawayMode;
 
-// TODO: 11/18/2024 implement checkpoints as time increases  and connect this with boost implememntation
 public class RunawayModeActivity extends AppCompatActivity {
     private RunawayMode backend;
 
@@ -127,7 +126,7 @@ public class RunawayModeActivity extends AppCompatActivity {
     public void checkCheckpoint() {
         handler.postDelayed(() -> {
             if (backend.getCheckpoint().getCheckpointcount() == 11) {
-                gameOver();// TODO: 11/18/2024 make this into you win page not gae over
+                gameOver();
             }
             if (backend.getTime().elapsed() >= backend.getCheckpoint().getLocation() && !isGameOver) {
                 checkpointNotification();
