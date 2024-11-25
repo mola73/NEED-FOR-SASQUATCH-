@@ -2,18 +2,18 @@
     android:id="@+id/destruction"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_road">
+    android:background="@drawable/road_animation">
 
 
     <!-- Main Car -->
     <ImageView
         android:id="@+id/main_car"
-        android:layout_width="40dp"
-        android:layout_height="80dp"
+        android:layout_width="130dp"
+        android:layout_height="120dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:src="@drawable/main_car" />
+        android:src="@drawable/destruction_car" />
 
     <!-- Oncoming Car: Left Lane -->
     <ImageView
@@ -49,16 +49,25 @@
         android:src="@drawable/oncoming_car"
         android:visibility="gone" />
 
-    <!-- Timer -->
+    <ImageView
+        android:id="@+id/time_boost"
+        android:layout_width="40dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="-200dp"
+        android:src="@drawable/time_boost"
+        android:visibility="gone" />
+
+    <!-- Counter -->
     <TextView
-        android:id="@+id/timer"
+        android:id="@+id/counter"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Time"
+        android:text="Counter"
         android:textSize="50dp"
-        android:textColor="@color/black"
+        android:textColor="@color/light_blue_600"
         android:textStyle="bold"
         />
+
 
 </RelativeLayout>

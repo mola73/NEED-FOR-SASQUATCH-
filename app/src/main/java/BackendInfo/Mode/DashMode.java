@@ -37,8 +37,8 @@ public class DashMode extends Mode {
     }
 
     public DashMode(){
-super();
-this.time=new Stopwatch();//initialize a new stopwatch for dashmode
+        super();
+        this.time=new Stopwatch();//initialize a new stopwatch for dashmode
     }
 
     public DashMode(int score, Stopwatch time) {

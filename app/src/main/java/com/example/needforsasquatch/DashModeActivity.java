@@ -65,6 +65,7 @@ private long timeElapsed;
             }
             return true;
         });
+
         backend.getTime().start();//start the time of the game
 
         startTime = System.currentTimeMillis();
@@ -178,14 +179,14 @@ private long timeElapsed;
         }, 50);
     }
 
-private void DT(){
+    private void DT(){
         if(backend.getTime().elapsed()/30==0){
             displayTime();
         }
-}
-    private void activateShield() {
-       displayTime();
+    }
 
+    private void activateShield() {
+        displayTime();
         isShieldActive = true;
         mainCar.setImageResource(R.drawable.main_car_shield); // Change to shielded car
         shield.setVisibility(View.GONE); // Hide shield
@@ -197,8 +198,6 @@ private void DT(){
     }
 
     private void gameOver() {
-
-
         isGameOver = true;
         long elapsedTime =(long) backend.getTime().elapsed();
 
@@ -224,6 +223,7 @@ private void DT(){
             drivingSound.release();
         }
     }
+
     private void displayTime(){
         Toast.makeText(this, backend.getTime().elapsedhms(), Toast.LENGTH_SHORT).show();//check time again
     }
