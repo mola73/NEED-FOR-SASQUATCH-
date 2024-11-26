@@ -12,7 +12,7 @@ public class GameOverActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_over);
+        setContentView(R.layout.activity_game_over_dash);
 
         ImageView youDiedImage = findViewById(R.id.you_died_image);
         TextView scoreTextView = findViewById(R.id.score_text);
