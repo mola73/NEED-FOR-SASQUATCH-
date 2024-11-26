@@ -31,9 +31,9 @@ public class DashModeActivity extends AppCompatActivity {
     private static final int SPEED_INCREMENT = 200;
     private static final int SHIELD_DURATION = 10000; // Shield active for 10 seconds
     private boolean isShieldActive = false; // Track shield status
+    private static final int SHIELD_SPAWN_INTERVAL = 30000; // Shield spawns every 50 seconds
 
     private ImageView shield;
-    private static final int SHIELD_SPAWN_INTERVAL = 30000; // Shield spawns every 50 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

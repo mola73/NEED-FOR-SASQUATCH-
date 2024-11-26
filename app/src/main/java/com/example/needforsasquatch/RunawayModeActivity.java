@@ -220,7 +220,7 @@ public class RunawayModeActivity extends AppCompatActivity {
 
         handler.postDelayed(() -> {
             isNitroActive = false;
-            backend.getCar().getMainCar().setImageResource(R.drawable.main_car); // Revert to normal car
+            backend.getCar().getMainCar().setImageResource(R.drawable.runaway_car); // Revert to normal car
         }, NITRO_DURATION);
     }
 

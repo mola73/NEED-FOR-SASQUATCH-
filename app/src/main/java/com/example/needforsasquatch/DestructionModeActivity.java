@@ -34,13 +34,14 @@ public class DestructionModeActivity extends AppCompatActivity {
     private int carSpeed = 625;
     //private boolean oncomingCarExists = false;
     private ImageView timeBoost;
-    private TextView counterDisplay;//IF IT BREAKS, IT IS HERE
+   private TextView counterDisplay;//IF IT BREAKS, IT IS HERE
     private int counter = 0;
     private int TIME_BOOST_SPAWN_INTERVAL = 40000;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_destruction);//later you should make an activity destruction
+        setContentView(R.layout.activity_destruction);
         counterDisplay = findViewById(R.id.counter);
         counterDisplay.setVisibility(View.VISIBLE);
 
@@ -48,16 +49,16 @@ public class DestructionModeActivity extends AppCompatActivity {
         endTime = (System.currentTimeMillis()/1000) + 60;//converting it to seconds
         startTime = System.currentTimeMillis()/1000;
         backend = new DestructionMode(endTime);
-        //backend.getTime().setStartTime(startTime);
-        //backend.getTime().start();
+       // backend.getTime().setStartTime(startTime);
+        backend.getTime().start();
         counterDisplay.setText(String.valueOf(counter));
 
         mainCar = findViewById(R.id.main_car); //later also remember to change car
         timeBoost = findViewById(R.id.time_boost);
         road = findViewById(R.id.destruction);
-        AnimationDrawable roadAnimation = (AnimationDrawable) road.getBackground();
-        roadAnimation.setEnterFadeDuration(10);
-        roadAnimation.setExitFadeDuration(10);
+ //     AnimationDrawable roadAnimation = (AnimationDrawable) road.getBackground();
+//        roadAnimation.setEnterFadeDuration(10);
+//        roadAnimation.setExitFadeDuration(10);
 
         //Initialize driving sound
         drivingSound = MediaPlayer.create(this, R.raw.driving);
