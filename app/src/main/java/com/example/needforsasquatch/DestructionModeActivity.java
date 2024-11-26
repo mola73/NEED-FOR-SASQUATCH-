@@ -85,7 +85,7 @@ public class DestructionModeActivity extends AppCompatActivity {
     private void checkGameOver(){
         if( (endTime == System.currentTimeMillis()/1000))  {//putting this here is a bit messy, but I am not sure where else to put
             this.gameOver();
-        }else if(counter >= 5){
+        }else if(counter >= 15){
             this.youWin();
         }
     }
