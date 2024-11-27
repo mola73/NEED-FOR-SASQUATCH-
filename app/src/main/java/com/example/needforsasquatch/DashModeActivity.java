@@ -209,7 +209,7 @@ public class DashModeActivity extends AppCompatActivity {
         isGameOver = true;
         long elapsedTime = (long) backend.getTime().elapsed();
 
-        Intent intent = new Intent(DashModeActivity.this, GameOverActivity.class);
+        Intent intent = new Intent(DashModeActivity.this, GameOverActivityDash.class);
         intent.putExtra("SCORE", elapsedTime);
         startActivity(intent);
         finish();
