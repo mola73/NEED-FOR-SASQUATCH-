@@ -50,8 +50,9 @@ B. One checkpoint should be around 1 minute of play time.
         this.hasArrived = true;
 
     }
-    public boolean hasWon(){
-        if(this.checkpointcount==11){
+
+    public boolean hasWon() {
+        if (this.checkpointcount == 11) {
             return true;
         }
         return false;

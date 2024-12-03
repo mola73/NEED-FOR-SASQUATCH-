@@ -8,12 +8,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Random;
+
 import android.os.Handler;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.CountDownTimer;
+
 import BackendInfo.Mode.DestructionMode;
 
 
@@ -28,13 +32,13 @@ public class DestructionModeActivity extends AppCompatActivity {
     private MediaPlayer crashingSound;
     private int screenWidth, laneWidth, carWidth, screenHeight, carHeight;
     private long endTime = 0;//milliseconds
-    private long startTime= 0;
+    private long startTime = 0;
     private long totalTime;
     private boolean isGameOver = false;
     private int carSpeed = 625;
     //private boolean oncomingCarExists = false;
     private ImageView timeBoost;
-   private TextView counterDisplay;//IF IT BREAKS, IT IS HERE
+    private TextView counterDisplay;//IF IT BREAKS, IT IS HERE
     private int counter = 0;
     private int TIME_BOOST_SPAWN_INTERVAL = 40000;
 
@@ -46,19 +50,16 @@ public class DestructionModeActivity extends AppCompatActivity {
         counterDisplay.setVisibility(View.VISIBLE);
 
         MainActivity.stopMenuMusic();  // Stop menu music
-        endTime = (System.currentTimeMillis()/1000) + 60;//converting it to seconds
-        startTime = System.currentTimeMillis()/1000;
+        endTime = (System.currentTimeMillis() / 1000) + 60;//converting it to seconds
+        startTime = System.currentTimeMillis() / 1000;
         backend = new DestructionMode(endTime);
-       // backend.getTime().setStartTime(startTime);
+        // backend.getTime().setStartTime(startTime);
         backend.getTime().start();
         counterDisplay.setText(String.valueOf(counter));
 
         mainCar = findViewById(R.id.main_car); //later also remember to change car
         timeBoost = findViewById(R.id.time_boost);
         road = findViewById(R.id.destruction);
- //     AnimationDrawable roadAnimation = (AnimationDrawable) road.getBackground();
-//        roadAnimation.setEnterFadeDuration(10);
-//        roadAnimation.setExitFadeDuration(10);
 
         //Initialize driving sound
         drivingSound = MediaPlayer.create(this, R.raw.driving);
@@ -67,11 +68,11 @@ public class DestructionModeActivity extends AppCompatActivity {
 
         screenWidth = getResources().getDisplayMetrics().widthPixels;
         screenHeight = getResources().getDisplayMetrics().heightPixels;
-        laneWidth = screenWidth/3;
+        laneWidth = screenWidth / 3;
         carWidth = mainCar.getLayoutParams().width;
         carHeight = mainCar.getLayoutParams().height;
 
-        findViewById(R.id.destruction).setOnTouchListener((v, event)->{
+        findViewById(R.id.destruction).setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 moveCar(event.getX(), event.getY());
             }
@@ -82,20 +83,20 @@ public class DestructionModeActivity extends AppCompatActivity {
         spawnTimeIncrease();
     }
 
-    private void checkGameOver(){
-        if( (endTime == System.currentTimeMillis()/1000))  {//putting this here is a bit messy, but I am not sure where else to put
+    private void checkGameOver() {
+        if ((endTime == System.currentTimeMillis() / 1000)) {
             this.gameOver();
-        }else if(counter >= 15){
+        } else if (counter >= 15) {
             this.youWin();
         }
     }
 
-    private void moveCar(float x, float y){
+    private void moveCar(float x, float y) {
         float targetX, targetY;
 
-        if(x < laneWidth) {
-            targetX = (laneWidth - carWidth)/2f; //outer Left
-        }else if (x < laneWidth * 2) {
+        if (x < laneWidth) {
+            targetX = (laneWidth - carWidth) / 2f; //outer Left
+        } else if (x < laneWidth * 2) {
             targetX = laneWidth + (laneWidth - carWidth) / 2f;  // Middle lane
         } else {
             targetX = 2 * laneWidth + (laneWidth - carWidth) / 2f;  // Right lane
@@ -127,7 +128,6 @@ public class DestructionModeActivity extends AppCompatActivity {
         float startX = lane * laneWidth + (laneWidth - carWidth) / 2f;
         oncomingCar.setX(startX);
         oncomingCar.setY(-200);//starts outside of the screen
-        //Toast.makeText(this, oncomingCar.getY(), Toast.LENGTH_SHORT).show();
 
         RelativeLayout road = findViewById(R.id.destruction);
         road.addView(oncomingCar);
@@ -141,22 +141,21 @@ public class DestructionModeActivity extends AppCompatActivity {
         checkCollision(oncomingCar);
     }
 
-    private void checkCollision(ImageView oncomingCar){
+    private void checkCollision(ImageView oncomingCar) {
         handler.postDelayed(() -> {
-            if(isCollision(mainCar, oncomingCar)){
+            if (isCollision(mainCar, oncomingCar) && !isGameOver) {
                 oncomingCar.setImageDrawable(null);
-                //endTime = endTime + 10;
                 counter = counter + 1;
-                counterDisplay.setText(String.valueOf(counter));//apparently, Android Studio can't use an intenger as a string
+                counterDisplay.setText(String.valueOf(counter));
                 backend.getTime().setEndTime(endTime);
                 displayTime();
-            }else if(!isGameOver){
+            } else if (!isGameOver) {
                 checkCollision(oncomingCar);
             }
         }, 50);
     }
 
-    private boolean isCollision(View v1, View v2){
+    private boolean isCollision(View v1, View v2) {
         int[] pos1 = new int[2];
         int[] pos2 = new int[2];
         v1.getLocationOnScreen(pos1);
@@ -165,7 +164,7 @@ public class DestructionModeActivity extends AppCompatActivity {
                 pos1[1] + v1.getHeight() < pos2[1] || pos1[1] > pos2[1] + v2.getHeight());
     }
 
-    private void spawnTimeIncrease(){
+    private void spawnTimeIncrease() {
         handler.postDelayed(() -> {
             if (!isGameOver) {
                 int lane = random.nextInt(3);
@@ -187,22 +186,29 @@ public class DestructionModeActivity extends AppCompatActivity {
 
     }
 
-    private void checkTimeCollision(){
+    private void checkTimeCollision() {
         handler.postDelayed(() -> {
-            if(!isGameOver && isCollision(mainCar, timeBoost) && timeBoost.getVisibility() == View.VISIBLE){
+            if (!isGameOver && isCollision(mainCar, timeBoost) && timeBoost.getVisibility() == View.VISIBLE) {
                 activateTimeBoost();
-            }else if (!isGameOver){
+            } else if (!isGameOver) {
                 checkTimeCollision();
             }
         }, 50);
     }
 
-    private void activateTimeBoost(){
+    private void activateTimeBoost() {
         endTime = endTime + 10;
         displayTime();
     }
 
-    private void gameOver(){
+    protected void onDestroy() {
+        super.onDestroy();
+        if (drivingSound != null) {
+            drivingSound.release();
+        }
+    }
+
+    private void gameOver() {
         isGameOver = true;
         Intent intent = new Intent(DestructionModeActivity.this, GameOverActivity.class);
         intent.putExtra("SCORE", counter);
@@ -210,7 +216,7 @@ public class DestructionModeActivity extends AppCompatActivity {
         finish();
     }
 
-    private void youWin(){
+    private void youWin() {
         isGameOver = true;
         Intent intent = new Intent(DestructionModeActivity.this, WinActivity.class);
         startActivity(intent);
@@ -218,8 +224,8 @@ public class DestructionModeActivity extends AppCompatActivity {
     }
 
 
-    private void displayTime(){
-        Toast.makeText(this, String.valueOf((int) (endTime - (System.currentTimeMillis()/1000))), Toast.LENGTH_SHORT).show();
+    private void displayTime() {
+        Toast.makeText(this, String.valueOf((int) (endTime - (System.currentTimeMillis() / 1000))), Toast.LENGTH_SHORT).show();
     }
 
 

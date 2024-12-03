@@ -7,11 +7,13 @@ public class Stopwatch {
     private boolean stopped;
     private double elapsedtime;
     private double endTime;
+
     public double getStarttime() {
         return starttime;
     }
-    public void setEndTime(double endTime){
-        this.endTime =endTime;
+
+    public void setEndTime(double endTime) {
+        this.endTime = endTime;
     }
 
     public Stopwatch() {
@@ -41,7 +43,8 @@ public class Stopwatch {
         }
         return this;
     }
-    public Stopwatch(double endTime){
+
+    public Stopwatch(double endTime) {
         this.endTime = endTime;
     }
 

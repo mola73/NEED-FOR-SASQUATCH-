@@ -54,7 +54,7 @@ public class RunawayModeActivity extends AppCompatActivity {
             return true;
         });
 
-        backend.getTime().start(); // NEW ADDITION start the time for the game
+        backend.getTime().start();
 
         spawnOncomingCars();
         increaseSpeedOverTime();
@@ -151,7 +151,7 @@ public class RunawayModeActivity extends AppCompatActivity {
 
                 gameOver();
 
-            } else if (!isGameOver && backend.getCheckpoint().getCheckpointcount()==11) {
+            } else if (!isGameOver && backend.getCheckpoint().getCheckpointcount() == 11) {
                 Win();
             } else if (!isGameOver) {
                 checkCollision(oncomingCar);
@@ -206,7 +206,7 @@ public class RunawayModeActivity extends AppCompatActivity {
 
 
     private void activateNitro() {
-        // displayTime();
+
 
         backend.getCheckpoint().update();
         boostcheckpoint();

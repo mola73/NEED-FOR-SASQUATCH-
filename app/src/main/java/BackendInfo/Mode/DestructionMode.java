@@ -36,13 +36,13 @@ public class DestructionMode extends Mode {
         this.car = car;
     }
 
-    public DestructionMode(double endTime){
+    public DestructionMode(double endTime) {
         super();
-        this.time=new Stopwatch(endTime);
+        this.time = new Stopwatch(endTime);
 
     }
 
-    public DestructionMode(){
+    public DestructionMode() {
         super();
     }
 }
