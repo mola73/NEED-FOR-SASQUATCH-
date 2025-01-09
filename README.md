@@ -1,4 +1,10 @@
-This project focuses on creating a 2D racing mobile game with casual but fun gameplay to capture the attention of casual gamers seeking simplistic, fast-paced action on their mobile devices. Three modes will focus on different goals and give the player various ways to play.
+2D Car Mobile Racing Game Final Progress Report 
+(Java and Android Studio)
+Team Sasquatch
+Mateus Abreu, David Stuart, Muhammad Olaniyan
+
+Introduction
+Team Sasquatch project focuses on creating a 2D racing mobile game with casual but fun gameplay to capture the attention of casual gamers seeking simplistic, fast-paced action on their mobile devices. Three modes will focus on different goals and give the player various ways to play.
 The first mode, Dash Mode, is an endless runner in which the player must avoid other oncoming cars and holes while his speed constantly increases. In this mode, the player loses if their car gets hit at any point.
 The second mode, Destruction Mode, focuses on only causing as much damage as possible. Contrary to Dash Mode, the speed is constant, and the challenge is fighting against a timer that is constantly decreasing while you try to hit as many things as possible. The original idea was that hitting something would increase a timer, but missing objects would make the timer go down, and the player loses as soon as their timer hits zero. 
 However, after some testing with another student outside the development team and some other challenges with implementing those functionalities caused by the chosen IDE, the mode gameplay was changed. The details about this change will be given further down the report.
@@ -15,6 +21,13 @@ For development, the tools used were Java, as the language our team is most fami
 The group also used Github to share the modifications each would make to the code, keeping track of them through branches and ensuring it is possible to go back to previous versions in case code changes broke the project.
 
 
+Each member’s duties
+Muhammad: The team leader who worked on the team organization and planning. 
+He also had the role of implementing Runaway Mode, introducing notifications in the game, organizing code files to avoid coupling, and monitoring version control to keep game code updates up to date.
+David: Leading back-end developer who implemented the functionalities of Dash Mode and the menu. Also, the one responsible for finding the soundtracks for the game. He also took responsibility for helping with debugging in both Destruction and Runaway mode.  
+Mateus: The main designer who worked on the graphical elements of the game, such as obstacles like holes and vehicles, as well as both player and oncoming enemy cars. He also worked on documentation and the reports. He took responsibility for the implementation of the destruction mode. 
+It is also essential to report that as they progressed into development, the members' duties became more intertwined, particularly regarding programming, as they worked on applying the finishing touches to the game. While those were the focus of each member, they each worked on something else as well, mainly to help the other two with whatever was necessary for that stage of development, such as David helping with debugging or Muhammad dealing with the project's repository.
+
 Total progress
 	Each mode was successfully implemented and was made playable.
 
@@ -24,6 +37,70 @@ Total progress
 
 	Runaway mode: This mode focuses on running away from the police. A runaway vehicle has to maneuver through police vehicles and pass ten checkpoints. The player has only one life to pass all checkpoints. Moreover, the vehicle's speed will gradually increase as it passes the checkpoint, increasing difficulty. The player can receive a nitro boost to propel them to the next checkpoint. If the player crashes before passing all the checkpoints, they lose and achieve an approximate score. If the player passes all checkpoints, they win. 
 
+Work and schedule
+
+September and October
+
+
+Friday
+Monday
+27th: Commence mobile testing:
+Configure this game to be placed on a mobile device.
+
+
+30th:
+Proposal Completion
+Prepare presentation
+
+
+4th:
+Code documentation:
+Make a document to overview our project to make the implementation process simple, clear, and easy
+
+
+7th:
+Code documentation 2
+
+
+11th: GUI implementation
+
+
+14th: Code functionality implementation
+(Dash Mode)
+18th: Code Functionality continued
+
+
+21th: Project Testing/ Progress Report
+25th: Project Testing
+28th: Planning for November
+
+	
+November
+
+
+Friday
+Monday
+1st: Destruction/Runway mode
+4th: Destruction/Runway mode
+8th: Destruction/Runway mode
+11th: Boosts
+
+
+15th: Boosts
+18th: Score/Sirens
+22th: Review
+Tuesday 26th: Presentation
+
+
+	In the end, the team managed to implement almost all of their goals, with the only ones that had to be scrapped being visual elements such as the siren lights that had to be left out of runaway mode because of time limitations.
+
+6. Conclusion
+Team Sasquatch 2D racing mobile game is divided into three modes: Dash, Destruction and Runaway. Dash mode is the basis for the other modes. Besides, other more basic components, like a menu, a losing screen, and some graphical elements, were also implemented.
+Team Sasquatch managed to develop a dynamic developing environment with Android Studio and Github, with all three members always being up to date with the code implementations made by the other members.
+The process was made simpler with the combination of a Plan Driven approach, Iterative Development, and Test Driven Approach to always be ahead on missing elements or bugs while also leaving space and flexibility for feedback and required changes that were hard to see beforehand through just the planning.
+The group also has clear divisions regarding what everyone currently focuses on, with Muhammad being the team leader and helping with Runaway Mode & organization. David implementing more functionalities of the game. Mateus focused on documentation and designs for the game, such as holes and trucks, and is working on Destruction Mode.
+The group needs to be updated with the schedule, and we must update the original plan. Regarding the remaining work, the group will focus on fixing current issues in game modes and organizing the code for better readability.
+In conclusion, the Team Sasquatch mobile game uses a combination of plan-driven, iterative development, and test-driven elements for their project. Java is used through Android Studio for the developing environment and GitHub for the version control system. November was a hectic month for the group, with the rest of the essential parts of the game roughly being implemented. At the end of the month, the group will finish the remaining work to deliver and present an engaging game for the project.
 
 To Run this game, you will need to : 
 Download Android Studio.
