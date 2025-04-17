@@ -1,6 +1,3 @@
-Here’s a cleaned-up, professional, and engaging version of your **README file** for the *Need for Sasquatch* game project. It keeps all the important details but improves clarity, structure, and flow for a GitHub audience:
-
----
 
 # 🚗 Need for Sasquatch  
 **A 2D Mobile Racing Game | Java & Android Studio**  
